@@ -24,6 +24,7 @@
     <ProjectGuid>{5f54e443-a0a7-45fa-94a2-b71004bb2369}</ProjectGuid>
     <RootNamespace>sfmlStatic</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>NeuralApp</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -134,7 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="sfmlPanZoomHandler.cpp" />
-    <ClCompile Include="sfmlStaticTemplate.cpp" />
+    <ClCompile Include="NeuralApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sfmlPanZoomHandler.h" />

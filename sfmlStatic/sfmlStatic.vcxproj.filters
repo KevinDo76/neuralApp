@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sfmlStaticTemplate.cpp">
+    <ClCompile Include="NeuralApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sfmlPanZoomHandler.cpp">
