@@ -7,20 +7,20 @@ int main()
     sfmlPanZoomHandler win(sf::VideoMode(200, 200), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
-    std::vector<std::vector<float>> a = { {5,2,1},
-                                          {6,2,4},
-                                          {-2,4,10}};
+    std::vector<std::vector<float>> a = { {1,2,3},
+                                          {4,5,6},
+                                          {7,8,9}};
     matrix ma(a);
-    matrix maa(std::vector<std::vector<float>>({{-1/22.f, 2/11.f, -3/44.f},
-                                                {17/22.f, -13/22.f, 7/44.f},
-                                                {-7/22.f, 3/11.f, 1/44.f}}
+    matrix maa(std::vector<std::vector<float>>({{1,0,0},
+                                                {0,1,0},
+                                                {0,0,1}}
     
     ));
     std::cout << maa << "\n";
     std::cout << ma << "\n";
     std::cout << "start\n";
     auto start = std::chrono::system_clock::now();
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 10000000; i++) {
         matrix b = maa * ma;
     }
     auto end = std::chrono::system_clock::now();
