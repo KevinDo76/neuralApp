@@ -1,42 +1,44 @@
 #include "matrix.h"
 #include <iostream>
 #include <vector>
+#include <thread>
 matrix::matrix(const std::vector<std::vector<float>>& init) : data(init) {
 	if (init.size() > 0) { //check for empty array
-		int rowS = init[0].size();
-		this->rowSize = rowS;
-		this->columnSize = init.size();
+		int rowS = init.size();
+		this->rowCount = rowS;
+		this->columnCount = init[0].size();
 		if (rowS < 1) {
 			throw std::invalid_argument("Empty Matrix");
 		}
-
-		for (int column = 0; column < init.size(); column++) {
-			if (!(init[column].size() == rowS)) { //check for row with different sizes
+	
+		for (int row = 0; row < init.size(); row++) {
+			if (!(init[row].size() == columnCount)) { //check for row with different sizes
 				throw std::invalid_argument("Inconsistence row size");
 			}
 		}
-
+	
 	}
 	else {
 		throw std::invalid_argument("Empty matrix");
 	}
 }
 
-matrix::matrix(int r, int c) : rowSize(r), columnSize(c) {
-	data.reserve(rowSize);
+matrix::matrix(int r, int c) : rowCount(r), columnCount(c) {
+	data.reserve(rowCount);
 	for (int row = 0; row < r; row++) {
-		data.push_back({});
+		data.emplace_back();
+		data[row].reserve(row);
 		for (int column = 0; column < c; column++) {
-			data[row].push_back(0);
+			data[row].emplace_back();
 		}
 	}
 }
 
 matrix matrix::operator+(const matrix& obj) {
-	if (this->columnSize == obj.columnSize && this->rowSize == obj.columnSize) {
-		matrix newMatrix(this->columnSize, this->rowSize);
-		for (int column = 0; column < this->columnSize; column++) {
-			for (int row = 0; row < obj.rowSize; row++) {
+	if (this->columnCount == obj.columnCount && this->rowCount == obj.rowCount) {
+		matrix newMatrix(this->rowCount, this->columnCount);
+		for (int column = 0; column < this->columnCount; column++) {
+			for (int row = 0; row < obj.rowCount; row++) {
 				newMatrix.data[row][column] = data[row][column] + obj.data[row][column];
 			}
 		}
@@ -48,10 +50,10 @@ matrix matrix::operator+(const matrix& obj) {
 }
 
 matrix matrix::operator-(const matrix& obj) {
-	if (this->columnSize == obj.columnSize && this->rowSize == obj.rowSize) {
-		matrix newMatrix(this->columnSize, this->rowSize);
-		for (int column = 0; column < obj.columnSize; column++) {
-			for (int row = 0; row < obj.rowSize; row++) {
+	if (this->columnCount == obj.columnCount && this->rowCount == obj.rowCount) {
+		matrix newMatrix(this->rowCount, this->columnCount);
+		for (int column = 0; column < obj.columnCount; column++) {
+			for (int row = 0; row < obj.rowCount; row++) {
 				newMatrix.data[row][column] = data[row][column] - obj.data[row][column];
 			}
 		}
@@ -63,9 +65,9 @@ matrix matrix::operator-(const matrix& obj) {
 }
 
 matrix matrix::operator*(float scalar) {
-	matrix newMatrix(this->columnSize, this->rowSize);
-	for (int column = 0; column < this->columnSize; column++) {
-		for (int row = 0; row < this->rowSize; row++) {
+	matrix newMatrix(this->columnCount, this->rowCount);
+	for (int column = 0; column < this->columnCount; column++) {
+		for (int row = 0; row < this->rowCount; row++) {
 			newMatrix.data[row][column] = this->data[row][column] * scalar;
 		}
 	}
@@ -73,30 +75,34 @@ matrix matrix::operator*(float scalar) {
 }
 
 std::vector<float>& matrix::operator[](int index) {
-	if (index < this->data.size()) {
+	if (index < this->rowCount) {
 		return this->data[index];
 	}
 	else {
+		std::cout << index << "\n";
 		throw std::invalid_argument("Index out of bound");
 	}
 }
 
 //data[row][column]
 matrix matrix::operator*(matrix m2) {
-	if ((*this)[0].size() == m2.data.size()) {
-		matrix newMatrix(this->rowSize, m2.columnSize);
+	if ((*this).columnCount == m2.rowCount) {
+		matrix newMatrix(this->rowCount, m2.columnCount);
 
-		for (int row1 = 0; row1 < newMatrix.rowSize; ++row1) {
+		for (int row1 = 0; row1 < newMatrix.rowCount; ++row1) {
 			
-			for (int column1 = 0; column1 < newMatrix.columnSize; ++column1) {
-				float sum = 0;
+			std::vector<std::thread> threads;
 
-				for (int sumIndex = 0; sumIndex < this->columnSize; ++sumIndex) {
+			for (int column1 = 0; column1 < newMatrix.columnCount; ++column1) {
+				float sum = 0;
+				
+				for (int sumIndex = 0; sumIndex < this->columnCount; ++sumIndex) {
 					sum += (*this)[row1][sumIndex] * m2[sumIndex][column1]; // second one is vertically indexed
 				}
-
+				
 				newMatrix[row1][column1] = sum;
 			}
+
 		}
 
 		return newMatrix;

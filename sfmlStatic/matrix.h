@@ -6,10 +6,10 @@ class matrix
 public:
 	std::vector<std::vector<float>> data;
 	matrix(const std::vector<std::vector<float>>& init);
-	matrix(int r, int c);
+	matrix(int c, int r);
 
-	int rowSize;
-	int columnSize;
+	int rowCount;
+	int columnCount;
 
 	friend std::ostream& operator<<(std::ostream& os, const matrix& ma);
 	matrix operator+(const matrix& obj);

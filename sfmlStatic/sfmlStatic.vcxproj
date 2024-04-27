@@ -135,11 +135,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="MLPNeural.cpp" />
     <ClCompile Include="sfmlPanZoomHandler.cpp" />
     <ClCompile Include="NeuralApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="MLPNeural.h" />
     <ClInclude Include="sfmlPanZoomHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
