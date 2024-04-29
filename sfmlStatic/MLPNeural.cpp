@@ -1,10 +1,16 @@
 #include "MLPNeural.h"
 #include "matrix.h"
 #define circlRad 20
-#define colorScale 1
+#define colorScale 4
 
 float MLPNeural::activationFunc(float i) {
-	return std::fmax(0, i);
+	return tanh(i);
+	if (i < 0) {
+		return i * 0.1;
+	}
+	else {
+		return i;
+	}
 }
 
 void MLPNeural::applyActivation(matrix& input) {
@@ -51,7 +57,26 @@ void MLPNeural::computeFeedForward(matrix& input, matrix& output) {
 		workingLine = workingLine * this->weightMatrices[i];
 		workingLine = workingLine + this->biasMatrices[i];
 		this->applyActivation(workingLine);
-		std::cout << workingLine << "\n";
+	}
+	output = workingLine;
+}
+
+void MLPNeural::randomize() {
+	for (int i = 0; i < this->weightMatrices.size(); i++) {
+		for (int row = 0; row < this->weightMatrices[i].rowCount; row++) {
+			for (int column = 0; column < this->weightMatrices[i].columnCount; column++) {
+				this->weightMatrices[i][row][column] = (float)rand() / RAND_MAX*0.5f-0.25f;
+				//this->weightMatrices[i][row][column] = 1;
+			}
+		}
+	}
+
+	for (int i = 0; i < this->biasMatrices.size(); i++) {
+		for (int row = 0; row < this->biasMatrices[i].rowCount; row++) {
+			for (int column = 0; column < this->biasMatrices[i].columnCount; column++) {
+				this->biasMatrices[i][row][column] = (float)rand() / RAND_MAX * 4 - 2;
+			}
+		}
 	}
 }
 
@@ -69,7 +94,7 @@ void MLPNeural::renderSelf(sf::RenderWindow& win) {
 					lineColor = sf::Color::Red;
 				}
 
-				lineColor.a = std::abs(this->weightMatrices[i][startCircleIndex][endCircleIndex]) / colorScale * 255;
+				lineColor.a = std::fminf(255,std::abs(this->weightMatrices[i][startCircleIndex][endCircleIndex]) / colorScale * 255);
 
 				buff[0].color = lineColor;
 				buff[1].color = lineColor;

@@ -14,6 +14,7 @@ public:
 	void computeFeedForward(matrix& input, matrix& output);
 	void applyActivation(matrix& input);
 	float activationFunc(float i);
+	void randomize();
 private:
 };
 

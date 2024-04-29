@@ -79,8 +79,8 @@ std::vector<float>& matrix::operator[](int index) {
 		return this->data[index];
 	}
 	else {
-		std::cout << index << "\n";
-		throw std::invalid_argument("Index out of bound");
+		std::cout << this->rowCount << " " << index << " out of bound\n";
+		//throw std::invalid_argument("Index out of bound");
 	}
 }
 
